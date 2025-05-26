@@ -38,7 +38,6 @@
     const profile = await liff.getProfile();
     const userId = profile.userId;
 
-    document.getElementById('labelId').textContent = userId;
 
     const iframe = document.getElementById('gasFrame');
     iframe.src = `https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec?userId=${encodeURIComponent(userId)}`;

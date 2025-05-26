@@ -37,6 +37,7 @@
         }
 
         const profile = await liff.getProfile();
+        alert(profile.userId);
         localStorage.setItem('lineUserId', profile.userId);
     }
 

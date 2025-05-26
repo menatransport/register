@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIFF ระบบลงทะเบียน</title>
+  <title >LIFF ระบบลงทะเบียน</title>
+  <!-- LIFF SDK v2 -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -15,56 +16,37 @@
     }
     iframe{
       width:100%;
-      height:calc(100% - 20px); /* เผื่อพื้นที่ label */
+      height:100%;
       border:0;
-    }
-    #labelId {
-      font-size: 10px;
-      display: block;
-      padding: 5px;
-      background-color: #f0f0f0;
     }
   </style>
 </head>
 <body>
-
-  <!-- แสดง userId -->
-  ID: <label id="labelId">กำลังโหลด...</label>
-
-  <!-- iframe จะเปลี่ยน src ภายหลัง -->
   <iframe id="gasFrame" src="https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec"></iframe>
 
   <script>
     const LIFF_ID = '2007304426-36dg1R7b';
-    // const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec';
+    const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec';
 
     async function main() {
       try {
         await liff.init({ liffId: LIFF_ID });
         if (!liff.isLoggedIn()) {
           liff.login({ redirectUri: window.location.href });
-          return;
+          return; 
         }
 
         const profile = await liff.getProfile();
-        const userId = profile.userId;
-
-        document.getElementById('labelId').textContent = userId;
-
-      } catch (err) {
-        console.error(err);
-        alert('เกิดข้อผิดพลาด LIFF: ' + err.message);
-      }
+        localStorage.setItem('lineUserId', profile.userId);
     }
 
     window.addEventListener('load', () => {
       if (window.liff) {
         main();
       } else {
-        alert('LIFF SDK โหลดไม่สำเร็จ');
+        alert('LIFF SDK failed to load.');
       }
     });
   </script>
-
 </body>
 </html>

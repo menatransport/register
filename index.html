@@ -23,37 +23,28 @@
   </style>
 </head>
 <body>
-  <iframe id="gasFrame" src="https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec"></iframe>
+<iframe id="gasFrame"></iframe>
 
-  <script>
-    const LIFF_ID = '2007304426-36dg1R7b';
+<script>
+  const LIFF_ID = '2007304426-36dg1R7b';
 
-    async function main() {
-      try {
-        await liff.init({ liffId: LIFF_ID });
-
-        if (!liff.isLoggedIn()) {
-          liff.login({ redirectUri: window.location.href });
-          return;
-        }
-
-        const profile = await liff.getProfile();
-        console.log("User ID:", profile.userId);
-        localStorage.setItem('lineUserId', profile.userId);
-
-      } catch (err) {
-        console.error('LIFF Error:', err);
-        alert('เกิดข้อผิดพลาดในการโหลด LIFF');
-      }
+  async function main() {
+    await liff.init({ liffId: LIFF_ID });
+    if (!liff.isLoggedIn()) {
+      liff.login({ redirectUri: window.location.href });
+      return;
     }
 
-    window.addEventListener('load', () => {
-      if (window.liff) {
-        main();
-      } else {
-        alert('LIFF SDK โหลดไม่สำเร็จ');
-      }
-    });
-  </script>
+    const profile = await liff.getProfile();
+    const userId = profile.userId;
+
+    document.getElementById('labelId').textContent = userId;
+
+    const iframe = document.getElementById('gasFrame');
+    iframe.src = `https://script.google.com/macros/s/AKfycbySc6sdaJzeQe0MayNn7gDF5gZn2JR4lxgUyo_bqUebrgLUwhjG1rFaXuzBdJX7xhB2/exec?userId=${encodeURIComponent(userId)}`;
+  }
+
+  main();
+</script>
 </body>
 </html>
